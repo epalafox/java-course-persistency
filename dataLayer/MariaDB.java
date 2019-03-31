@@ -5,13 +5,17 @@ import java.util.ArrayList;
 
 import models.Auto;
 import models.Transmision;
-public class MariaDB {
+public class MariaDB implements IDatabase {
+	public MariaDB()
+	{
+		connectDatabase();
+	}
 	Connection connection;
     /**
      * We establish the connection with the database <b>customerdb</b>.
      * Establecemos la conexión con la base de datos <b>customerdb</b>.
      */
-    public void connectDatabase() {
+    private void connectDatabase() {
         try {
             connection = null;
             // Database connect
@@ -19,12 +23,11 @@ public class MariaDB {
             connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost/autocar",
                     "root", "");
-            boolean valid = connection.isValid(50000);
-            System.out.println(valid ? "TEST OK" : "TEST FAIL");
         } catch (java.sql.SQLException sqle) {
             System.out.println("Error: " + sqle);
         }
-    }    
+    }
+	@Override
     public ArrayList<Auto> getAutos()
     {
     	Statement s;
@@ -54,6 +57,8 @@ public class MariaDB {
 		}
 		return returnValue;
     }
+
+	@Override
     public void insertAuto(Auto auto)
     {
     	try {
@@ -70,6 +75,34 @@ public class MariaDB {
 			e.printStackTrace();
 		}
     }
+
+	@Override
+    public void updateAuto(Auto auto)
+    {
+
+    	try {
+			Statement s = connection.createStatement();
+			s.execute("Update `Autos` set "
+					+ "(`year`= " + auto.year
+					+ ", `brand` = '" + auto.brand + "'" 
+					+ ", `model` = '" + auto.model + "'" 
+					+ ", `price` = "+ auto.price
+					+ ", `km` = " + auto.km 
+					+ ", `extColor` = '" + auto.extColor + "'"
+					+ ", `intColor` = '" + auto.intColor + "'"
+					+ ", `trans` = " + (auto.trans == Transmision.auto ? 0 : 1)
+					+ ", `liters` = " + auto.liters 
+					+ ", `doors` = " + auto.doors);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+	@Override
+	public void deleteAuto(Auto auto) {
+		// TODO Auto-generated method stub
+		
+	}
     /**
      * Method to connect to the database by passing parameters.
      * Método para establecer la conexión a la base de datos mediante el paso de parámetros.
@@ -103,5 +136,5 @@ public class MariaDB {
         } catch (java.sql.SQLException sqle) {
             System.out.println("Error al conectar con la base de datos de MySQL (" + url + "): " + sqle);
         }
-}
+    }
 }

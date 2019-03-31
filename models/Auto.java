@@ -1,6 +1,9 @@
 package models;
 
+import org.bson.types.ObjectId;
+
 public class Auto {
+	public ObjectId _id;
 	public int id;
 	public int year;
 	public String brand;

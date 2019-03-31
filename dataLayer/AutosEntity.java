@@ -12,7 +12,7 @@ import java.util.Scanner;
 import models.Auto;
 import models.Transmision;
 
-public class AutosEntity {
+public class AutosEntity implements IDatabase {
 	File file = new File("/home/emmanuel/Documents/autos.db");
 	public AutosEntity()
 	{
@@ -85,5 +85,15 @@ public class AutosEntity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public void updateAuto(Auto auto) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void deleteAuto(Auto auto) {
+		// TODO Auto-generated method stub
+		
 	}
 }
